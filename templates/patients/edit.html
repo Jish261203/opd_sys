@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block title %}Edit Patient - OPD System{% endblock
+%} {% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <h2>Edit Patient Status</h2>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="mb-3 p-3 bg-light rounded">
+          <h5>{{ patient.name }}</h5>
+          <p class="mb-0 text-muted">
+            Phone: {{ patient.phone }} | Age: {{ patient.age }}
+          </p>
+        </div>
+
+        <form method="POST" action="/patients/{{ patient.id }}/edit">
+          <div class="mb-3">
+            <label for="status" class="form-label">Patient Status *</label>
+            <select class="form-control" id="status" name="status" required>
+              <option value="">Select Status</option>
+              <option
+                value="Active"
+                {%
+                if
+                patient.status=""
+                ="Active"
+                %}selected{%
+                endif
+                %}
+              >
+                Active
+              </option>
+              <option
+                value="Inactive"
+                {%
+                if
+                patient.status=""
+                ="Inactive"
+                %}selected{%
+                endif
+                %}
+              >
+                Inactive
+              </option>
+            </select>
+            <small class="form-text text-muted d-block mt-2">
+              <strong>Active:</strong> Patient can book appointments and receive
+              consultations.<br />
+              <strong>Inactive:</strong> Patient cannot create new appointments.
+            </small>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="/patients/{{ patient.id }}" class="btn btn-secondary"
+              >Cancel</a
+            >
+            <button type="submit" class="btn btn-primary">Update Status</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

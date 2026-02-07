@@ -1,0 +1,111 @@
+{% extends 'base.html' %} {% block title %}{{ patient.name }} - OPD System{%
+endblock %} {% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <h2>Patient Details</h2>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Name</h5>
+            <p class="text-muted">{{ patient.name }}</p>
+          </div>
+          <div class="col-md-6">
+            <h5>Gender</h5>
+            <p class="text-muted">{{ patient.gender }}</p>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Age</h5>
+            <p class="text-muted">{{ patient.age }} years</p>
+          </div>
+          <div class="col-md-6">
+            <h5>Phone</h5>
+            <p class="text-muted">{{ patient.phone }}</p>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Status</h5>
+            <p>
+              {% if patient.status == 'Active' %}
+              <span class="badge bg-success" style="font-size: 1rem"
+                >{{ patient.status }}</span
+              >
+              {% else %}
+              <span class="badge bg-danger" style="font-size: 1rem"
+                >{{ patient.status }}</span
+              >
+              {% endif %}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h5>Registered On</h5>
+            <p class="text-muted">
+              {{ patient.created_at.strftime('%Y-%m-%d %H:%M') }}
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <h5 class="mt-4">Appointments ({{ patient.appointments|length }})</h5>
+        {% if patient.appointments %}
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Doctor</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appointment in patient.appointments %}
+              <tr>
+                <td>
+                  {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M')
+                  }}
+                </td>
+                <td>{{ appointment.doctor_name }}</td>
+                <td>
+                  {% if appointment.status == 'Scheduled' %}
+                  <span class="badge bg-primary">{{ appointment.status }}</span>
+                  {% elif appointment.status == 'Completed' %}
+                  <span class="badge bg-success">{{ appointment.status }}</span>
+                  {% else %}
+                  <span class="badge bg-danger">{{ appointment.status }}</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a
+                    href="/appointments/{{ appointment.id }}"
+                    class="btn btn-sm btn-info"
+                    >View</a
+                  >
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No appointments yet.</p>
+        {% endif %}
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+          <a href="/patients/" class="btn btn-secondary">Back</a>
+          <a href="/patients/{{ patient.id }}/edit" class="btn btn-warning"
+            >Edit Status</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

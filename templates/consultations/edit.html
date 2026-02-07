@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% block title %}Edit Consultation - OPD System{%
+endblock %} {% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <h2>Edit Consultation</h2>
+
+    <div class="card mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">
+          {{ patient.name }} - Consultation #{{ consultation.id }}
+        </h5>
+      </div>
+      <div class="card-body">
+        {% if consultation.status != 'Draft' %}
+        <div class="alert alert-danger">
+          You can only edit consultations in Draft status. This consultation is
+          {{ consultation.status }}.
+        </div>
+        {% else %}
+        <form method="POST" action="/consultations/{{ consultation.id }}/edit">
+          <div class="mb-3">
+            <label for="vitals" class="form-label"
+              >Vitals / Medical Findings *</label
+            >
+            <textarea
+              class="form-control"
+              id="vitals"
+              name="vitals"
+              rows="4"
+              required
+            >
+{{ consultation.vitals }}</textarea
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="notes" class="form-label">Consultation Notes</label>
+            <textarea class="form-control" id="notes" name="notes" rows="4">
+{{ consultation.notes if consultation.notes else '' }}</textarea
+            >
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a
+              href="/consultations/{{ consultation.id }}"
+              class="btn btn-secondary"
+              >Cancel</a
+            >
+            <button type="submit" class="btn btn-primary">
+              Update Consultation
+            </button>
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

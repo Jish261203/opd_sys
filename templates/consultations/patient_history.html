@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block title %}{{ patient.name }} - Consultation
+History - OPD System{% endblock %} {% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2>Consultation History: {{ patient.name }}</h2>
+    <p class="text-muted">
+      Phone: {{ patient.phone }} | Age: {{ patient.age }}
+    </p>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    {% if consultations %} {% for consultation in consultations %}
+    <div class="card mb-3">
+      <div class="card-header bg-light">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            Consultation #{{ consultation.id }} - {{
+            consultation.appointment.doctor_name }}
+          </h5>
+          <span class="badge bg-success">{{ consultation.status }}</span>
+        </div>
+        <small class="text-muted"
+          >{{ consultation.created_at.strftime('%Y-%m-%d %H:%M') }}</small
+        >
+      </div>
+      <div class="card-body">
+        <h6>Vitals / Medical Findings</h6>
+        <p>{{ consultation.vitals }}</p>
+
+        {% if consultation.notes %}
+        <h6 class="mt-3">Notes</h6>
+        <p>{{ consultation.notes }}</p>
+        {% endif %}
+
+        <div class="mt-3">
+          <a
+            href="/consultations/{{ consultation.id }}"
+            class="btn btn-sm btn-info"
+            >View Full Details</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="alert alert-info" role="alert">
+      No completed consultations found for this patient.
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <a href="/patients/{{ patient.id }}" class="btn btn-secondary"
+      >Back to Patient</a
+    >
+  </div>
+</div>
+{% endblock %}

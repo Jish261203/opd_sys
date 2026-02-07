@@ -1,0 +1,98 @@
+{% extends 'base.html' %} {% block title %}Consultation Details - OPD System{%
+endblock %} {% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <h2>Consultation Details</h2>
+
+    <div class="card mt-4">
+      <div class="card-header bg-light">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Consultation #{{ consultation.id }}</h5>
+          <span
+            class="badge {% if consultation.status == 'Draft' %}bg-warning{% else %}bg-success{% endif %} p-2"
+            >{{ consultation.status }}</span
+          >
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Patient</h5>
+            <p class="text-muted">
+              <a href="/patients/{{ patient.id }}">{{ patient.name }}</a>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h5>Doctor</h5>
+            <p class="text-muted">{{ appointment.doctor_name }}</p>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Appointment Date & Time</h5>
+            <p class="text-muted">
+              {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M') }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h5>Recorded On</h5>
+            <p class="text-muted">
+              {{ consultation.created_at.strftime('%Y-%m-%d %H:%M') }}
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <h5 class="mt-4">Vitals / Medical Findings</h5>
+        <div class="bg-light p-3 rounded mb-3">{{ consultation.vitals }}</div>
+
+        <h5 class="mt-4">Notes</h5>
+        <div class="bg-light p-3 rounded mb-3">
+          {{ consultation.notes if consultation.notes else '<em
+            >No additional notes</em
+          >' }}
+        </div>
+
+        <hr />
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <a href="/appointments/{{ appointment.id }}" class="btn btn-secondary"
+            >Back to Appointment</a
+          >
+
+          {% if consultation.status == 'Draft' %}
+          <a
+            href="/consultations/{{ consultation.id }}/edit"
+            class="btn btn-warning"
+            >Edit</a
+          >
+          <form
+            method="POST"
+            action="/consultations/{{ consultation.id }}/complete"
+            style="display: inline"
+          >
+            <button
+              type="submit"
+              class="btn btn-success"
+              onclick="
+                return confirm(
+                  'Mark this consultation as completed? The appointment status will be automatically updated to Completed.',
+                );
+              "
+            >
+              ✓ Mark Completed
+            </button>
+          </form>
+          {% else %}
+          <span class="badge bg-success" style="font-size: 1rem"
+            >Completed</span
+          >
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

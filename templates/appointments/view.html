@@ -1,0 +1,109 @@
+{% extends 'base.html' %} {% block title %}Appointment Details - OPD System{%
+endblock %} {% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <h2>Appointment Details</h2>
+
+    <div class="card mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">Appointment #{{ appointment.id }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Patient</h5>
+            <p class="text-muted">
+              <a href="/patients/{{ appointment.patient.id }}"
+                >{{ appointment.patient.name }}</a
+              >
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h5>Doctor</h5>
+            <p class="text-muted">{{ appointment.doctor_name }}</p>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Date & Time</h5>
+            <p class="text-muted">
+              {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M') }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h5>Status</h5>
+            <p>
+              {% if appointment.status == 'Scheduled' %}
+              <span class="badge bg-primary" style="font-size: 1rem"
+                >{{ appointment.status }}</span
+              >
+              {% elif appointment.status == 'Completed' %}
+              <span class="badge bg-success" style="font-size: 1rem"
+                >{{ appointment.status }}</span
+              >
+              {% else %}
+              <span class="badge bg-danger" style="font-size: 1rem"
+                >{{ appointment.status }}</span
+              >
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <h5 class="mt-4">Consultation</h5>
+        {% if consultation %}
+        <div class="alert alert-info">
+          <strong>Consultation #{{ consultation.id }}</strong> - Status: {% if
+          consultation.status == 'Draft' %}
+          <span class="badge bg-warning">{{ consultation.status }}</span>
+          {% else %}
+          <span class="badge bg-success">{{ consultation.status }}</span>
+          {% endif %}
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <a
+            href="/consultations/{{ consultation.id }}"
+            class="btn btn-sm btn-info"
+            >View Consultation</a
+          >
+        </div>
+        {% else %}
+        <p class="text-muted">No consultation recorded yet.</p>
+        {% if appointment.status == 'Scheduled' %}
+        <a
+          href="/consultations/new/{{ appointment.id }}"
+          class="btn btn-success"
+          >Create Consultation</a
+        >
+        {% endif %} {% endif %}
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+          <a href="/appointments/today" class="btn btn-secondary">Back</a>
+          {% if appointment.status == 'Scheduled' %}
+          <form
+            method="POST"
+            action="/appointments/{{ appointment.id }}/cancel"
+            style="display: inline"
+          >
+            <button
+              type="submit"
+              class="btn btn-danger"
+              onclick="
+                return confirm(
+                  'Are you sure you want to cancel this appointment?',
+                );
+              "
+            >
+              Cancel Appointment
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

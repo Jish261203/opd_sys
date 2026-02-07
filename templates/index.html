@@ -1,0 +1,93 @@
+{% extends 'base.html' %} {% block title %}OPD Management System - Home{%
+endblock %} {% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="jumbotron bg-light p-5 rounded">
+      <h1 class="display-4">Welcome to OPD Management System</h1>
+      <p class="lead">
+        Manage patients, appointments, and consultations efficiently.
+      </p>
+      <hr class="my-4" />
+      <p>
+        This system helps healthcare providers manage patient care workflow
+        seamlessly.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-body text-center">
+        <h5 class="card-title">👥 Patients</h5>
+        <p class="card-text">
+          Manage patient information, create new patients, and update their
+          status.
+        </p>
+        <a href="/patients/" class="btn btn-primary">Manage Patients</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-body text-center">
+        <h5 class="card-title">📅 Appointments</h5>
+        <p class="card-text">
+          Book appointments for patients and view today's appointment schedule.
+        </p>
+        <a href="/appointments/today" class="btn btn-primary"
+          >View Today's Appointments</a
+        >
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-body text-center">
+        <h5 class="card-title">📋 Consultations</h5>
+        <p class="card-text">
+          Record consultation details and mark consultations as completed.
+        </p>
+        <a href="/appointments/today" class="btn btn-primary"
+          >Start Consultation</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">System Workflow</h5>
+      </div>
+      <div class="card-body">
+        <ol>
+          <li>
+            <strong>Create Patient:</strong> Register a new patient with name,
+            gender, age, and phone number.
+          </li>
+          <li>
+            <strong>Book Appointment:</strong> Schedule an appointment for an
+            active patient with a doctor.
+          </li>
+          <li>
+            <strong>Record Consultation:</strong> When the patient arrives,
+            create a consultation record with vitals and notes.
+          </li>
+          <li>
+            <strong>Mark Complete:</strong> Once consultation is done, mark it
+            as completed. This automatically completes the appointment.
+          </li>
+          <li>
+            <strong>View History:</strong> Access completed consultations for
+            any patient.
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
